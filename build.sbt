@@ -1,8 +1,11 @@
 libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test->default"
+//libraryDependencies += "org.scala-lang.modules" % "scala-java8-compat_2.12" % "0.8.0"
 
 scalafmtOnCompile in ThisBuild := true
 
 scalacOptions in (Compile, doc) := Seq("-diagrams", "-implicits", "-implicits-show-all")
+
+coverageExcludedPackages := "sodium.examples;sodium.swidgets"
 
 lazy val root = (project in file(".")).settings(
   name := "sodium",
