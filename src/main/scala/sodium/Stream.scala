@@ -278,6 +278,10 @@ class Stream[A] private (val node: Node, val finalizers: ListBuffer[Listener], v
   final def gate(c: Cell[Boolean]): Stream[A] =
     filterOptional(snapshot[Boolean, Option[A]](c, (a, pred) => if (pred) Some(a) else None))
 
+  //japi
+  final def jGate(c: Cell[java.lang.Boolean]): Stream[A] =
+    filterOptional(snapshot[java.lang.Boolean, Option[A]](c, (a, pred) => if (pred) Some(a) else None))
+
   /**
     * Transform an event with a generalized state loop (a Mealy machine). The function
     * is passed the input and the old state and returns the new state and output value.
