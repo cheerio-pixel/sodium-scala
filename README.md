@@ -1,15 +1,6 @@
-# Sodium for Scala
+# Sodium for Scala [![Build Status](https://travis-ci.org/newca12/sodium-scala.svg?branch=master)](https://travis-ci.org/newca12/sodium-scala) [![codecov](https://codecov.io/gh/newca12/sodium-scala/branch/master/graph/badge.svg)](https://codecov.io/gh/newca12/sodium-scala)
 
-To compile
+### About ###
 
-    sbt compile
-
-To run tests
-
-    sbt test
-    
-To generate Scaladoc (diagrams requires Graphviz executables in path)
-
-    sbt doc
-
+Port of [Sodium FRP](https://github.com/SodiumFRP/sodium) (Functional Reactive Programming) library to Scala.
 
