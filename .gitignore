@@ -1,0 +1,29 @@
+# sbt specific
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+.cache*
+
+# Eclipse specific
+.cache
+.classpath
+.project
+.settings/
+.target
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet
+.scalastyle
+
+# IntelliJ IDEA specific
+.idea
+
+# OSX specific
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints
