@@ -168,11 +168,6 @@ object Transaction {
     }
   }
 
-  //not needed in Scala
-  //def run(f: Transaction => Unit): Unit = {
-  //  apply(t => f(t))
-  //}
-
   /**
     * Execute the specified code after the current transaction is closed,
     * or immediately if there is no current transaction.
