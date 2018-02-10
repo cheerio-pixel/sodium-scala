@@ -17,11 +17,7 @@ public class SButton extends JButton {
         StreamSink<Void> sClickedSink = new StreamSink<>();
         this.sClicked = sClickedSink;
         Void tmp = null;
-        addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                sClickedSink.send(null);
-            }
-        });;
+        addActionListener(e -> sClickedSink.send(null));;
         // Do it at the end of the transaction so it works with looped cells
         Transaction.post(() -> setEnabled(enabled.sample()));
         l = Operational.updates(enabled).listen(
