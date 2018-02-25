@@ -4,8 +4,6 @@ import scala.runtime.BoxedUnit;
 import sodium.*;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class SButton extends JButton {
     public SButton(String label) {
@@ -20,7 +18,7 @@ public class SButton extends JButton {
         addActionListener(e -> sClickedSink.send(null));;
         // Do it at the end of the transaction so it works with looped cells
         Transaction.post(() -> setEnabled(enabled.sample()));
-        l = Operational.updates(enabled).listen(
+        l = enabled.updates().listen(
             ena -> {
                 if (SwingUtilities.isEventDispatchThread())
                     this.setEnabled(ena);

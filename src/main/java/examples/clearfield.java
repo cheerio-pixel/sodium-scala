@@ -7,6 +7,7 @@ import swidgets.STextField;
 import javax.swing.*;
 import java.awt.*;
 
+//Listing 2.1
 public class clearfield {
     public static void main(String[] args) {
         JFrame frame = new JFrame("clearfield");

@@ -16,6 +16,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Optional;
 
+//Listing 11.3
 class IsBusy<A,B> {
     public IsBusy(scala.Function1<Stream<A>, Stream<B>> action, Stream<A> sIn) {
         sOut = action.apply(sIn);

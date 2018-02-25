@@ -7,6 +7,7 @@ import swidgets.SLabel;
 import javax.swing.*;
 import java.awt.*;
 
+//Lisiting 2.5
 public class redgreen {
     public static void main(String[] args) {
         JFrame frame = new JFrame("redgreen");

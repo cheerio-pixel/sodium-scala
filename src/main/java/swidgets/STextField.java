@@ -76,7 +76,7 @@ public class STextField extends JTextField
             });
             return BoxedUnit.UNIT;
         }).append(
-            Operational.updates(enabled).listen(
+            enabled.updates().listen(
                 ena -> {
                     if (SwingUtilities.isEventDispatchThread())
                         this.setEnabled(ena);

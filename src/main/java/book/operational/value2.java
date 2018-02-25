@@ -8,7 +8,8 @@ public class value2 {
         CellSink<Integer> x = new CellSink<>(0);
         x.send(1);
         Listener l = Transaction.apply(Unit -> {
-            return Operational.value(x).listen(x_ -> {
+            //Warning book syntax change
+            return x.values().listen(x_ -> {
                 System.out.println(x_);  return BoxedUnit.UNIT;
             });
         });

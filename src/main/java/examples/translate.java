@@ -8,6 +8,7 @@ import swidgets.STextField;
 import javax.swing.*;
 import java.awt.*;
 
+//Listing 2.6
 public class translate {
     public static void main(String[] args) {
         JFrame view = new JFrame("Translate");

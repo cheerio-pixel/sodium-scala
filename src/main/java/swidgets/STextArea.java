@@ -47,7 +47,7 @@ public class STextArea extends JTextArea
      * Non-editable text area with text defined by a cell.
      */
     public STextArea(Cell<String> text) {
-        this(Operational.updates(text), text.sample());
+        this(text.updates(), text.sample());
         setEditable(false);
     }
 
@@ -55,7 +55,7 @@ public class STextArea extends JTextArea
      * Non-editable text area with text defined by a cell.
      */
     public STextArea(Cell<String> text, int rows, int columns) {
-        this(Operational.updates(text), text.sample(), rows, columns);
+        this(text.updates(), text.sample(), rows, columns);
         setEditable(false);
     }
 
@@ -63,7 +63,7 @@ public class STextArea extends JTextArea
      * Non-editable text area with text defined by a cell.
      */
     public STextArea(Cell<String> text, Cell<Boolean> enabled) {
-        this(Operational.updates(text), text.sample(), enabled);
+        this(text.updates(), text.sample(), enabled);
         setEditable(false);
     }
 
@@ -71,7 +71,7 @@ public class STextArea extends JTextArea
      * Non-editable text area with text defined by a cell.
      */
     public STextArea(Cell<String> text, int rows, int columns, Cell<Boolean> enabled) {
-        this(Operational.updates(text), text.sample(), rows, columns, enabled);
+        this(text.updates(), text.sample(), rows, columns, enabled);
         setEditable(false);
     }
 
@@ -107,7 +107,7 @@ public class STextArea extends JTextArea
             });
             return BoxedUnit.UNIT;
         }).append(
-            Operational.updates(enabled).listen(
+            enabled.updates().listen(
                 ena -> {
                     if (SwingUtilities.isEventDispatchThread())
                         this.setEnabled(ena);

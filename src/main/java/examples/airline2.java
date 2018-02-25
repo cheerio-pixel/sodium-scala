@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Calendar;
 
-
+//Lisitng 1.6
 class Rule {
     public Rule(scala.Function2<Calendar, Calendar, Boolean> f) {
         this.f = f;

@@ -8,6 +8,7 @@ import swidgets.SLabel;
 import javax.swing.*;
 import java.awt.*;
 
+//Listing 3.1
 public class spinner {
     public static void main(String[] args) {
         JFrame view = new JFrame("spinner");

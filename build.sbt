@@ -1,11 +1,13 @@
 libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test->default"
 //libraryDependencies += "org.scala-lang.modules" % "scala-java8-compat_2.12" % "0.8.0"
 
-//wartremoverWarnings ++= Warts.unsafe
+//wartremoverWarnings ++= Warts.all
 
 scalafmtOnCompile in ThisBuild := true
 
 scalacOptions in (Compile, doc) := Seq("-diagrams", "-implicits", "-implicits-show-all")
+
+scalacOptions in (Compile, console) --= Seq("-Ywarn-unused:imports", "-Xfatal-warnings")
 
 coverageExcludedPackages := "sodium.examples;sodium.swidgets"
 
@@ -26,7 +28,7 @@ lazy val root = (project in file(".")).settings(
     "-language:implicitConversions", // Allow definition of implicit functions called views
     "-unchecked", // Enable additional warnings where generated code depends on assumptions.
     "-Xcheckinit", // Wrap field accessors to throw an exception on uninitialized access.
-    //"-Xfatal-warnings", // Fail the compilation if there are any warnings.
+    "-Xfatal-warnings", // Fail the compilation if there are any warnings.
     "-Xfuture", // Turn on future language features.
     "-Xlint:adapted-args", // Warn if an argument list is modified to match the receiver.
     "-Xlint:by-name-right-associative", // By-name parameter of right associative operator.

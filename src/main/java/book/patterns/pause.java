@@ -5,9 +5,10 @@ import sodium.*;
 
 import java.util.Optional;
 
+//Listing 12.2
 public class pause {
     public static Cell<Double> pausableClock(Stream<Void> sPause,
-            Stream<Void> sResume, Cell<Double> clock) {
+                                                 Stream<Void> sResume, Cell<Double> clock) {
         Cell<Optional<Double>> pauseTime =
             sPause.snapshot(clock, (u, t) -> Optional.<Double>of(t))
                 .orElse(sResume.map(u -> Optional.<Double>empty()))

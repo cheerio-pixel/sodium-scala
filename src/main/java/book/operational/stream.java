@@ -3,6 +3,7 @@ package book.operational;
 import scala.runtime.BoxedUnit;
 import sodium.*;
 
+//Listing 8.1
 public class stream {
     public static void main(String[] args) {
         StreamSink<Integer> sX = new StreamSink<>();
