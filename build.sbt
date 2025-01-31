@@ -1,4 +1,4 @@
-libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test->default"
+libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % Test
 //libraryDependencies += "org.scala-lang.modules" % "scala-java8-compat_2.12" % "0.8.0"
 
 //wartremoverWarnings ++= Warts.all
@@ -14,8 +14,11 @@ libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test->defa
 lazy val root = (project in file(".")).settings(
   name := "sodium",
   organization := "nz.sodium",
-  version := "1.0.0",
+  version := "2.0.0",
   scalaVersion := "3.3.5",
+  scalacOptions ++= Seq(
+    "-deprecation",
+  )
   // scalacOptions ++= Seq(
   //   "-deprecation", // Emit warning and location for usages of deprecated APIs.
   //   "-encoding",
