@@ -1,4 +1,3 @@
-libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % Test
 //libraryDependencies += "org.scala-lang.modules" % "scala-java8-compat_2.12" % "0.8.0"
 
 //wartremoverWarnings ++= Warts.all
@@ -18,7 +17,9 @@ lazy val root = (project in file(".")).settings(
   scalaVersion := "3.3.5",
   scalacOptions ++= Seq(
     "-deprecation",
-  )
+  ),
+
+  libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % Test
   // scalacOptions ++= Seq(
   //   "-deprecation", // Emit warning and location for usages of deprecated APIs.
   //   "-encoding",
