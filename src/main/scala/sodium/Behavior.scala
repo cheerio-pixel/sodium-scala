@@ -201,7 +201,7 @@ class Behavior[A](val str: Stream[A], protected var currentValue: Option[A]) {
 
 object Behavior {
 
-  private class LazySample[A] private[sodium] (var cell: Behavior[A]) {
+  private[sodium] class LazySample[A] (var cell: Behavior[A]) {
     private[sodium] var hasValue = false
     private[sodium] var value: A = _
   }

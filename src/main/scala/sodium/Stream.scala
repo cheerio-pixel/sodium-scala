@@ -265,7 +265,7 @@ class Stream[A] private (val node: Node, val finalizers: ListBuffer[Listener], v
                                        ce: Behavior[E],
                                        cf: Behavior[F],
                                        fn: (A, B, C, D, E, F) => G): Stream[G] =
-    this.snapshot[B, G](cb, (a: A, b: B) ⇒ fn(a, b, cc.sample(), cd.sample(), ce.sample(), cf.sample()))
+    this.snapshot[B, G](cb, (a: A, b: B) => fn(a, b, cc.sample(), cd.sample(), ce.sample(), cf.sample()))
 
   /**
     * Variant of [[Stream!.merge(s:sodium\.Stream[A],f:(A,A)=>A):sodium\.Stream[A]* merge(Stream,(A,A)=>A)]]

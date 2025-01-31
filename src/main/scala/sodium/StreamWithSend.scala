@@ -30,7 +30,6 @@ class StreamWithSend[A] extends Stream[A] {
               // If it hasn't been gc'ed..., call it
               uta.get match {
                 case t: TransactionHandler[_] => t.asInstanceOf[TransactionHandler[A]].run(trans2, a)
-                case _                        =>
               }
             }
           } catch {
