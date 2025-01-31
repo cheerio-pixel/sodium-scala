@@ -34,7 +34,7 @@ class BehaviorTester {
     c.send("0")
     c.send(null)
     c.send("1")
-    l.unlisten
+    l.unlisten()
     assertEquals(List("", "0", null, "1"), out)
   }
 
@@ -54,7 +54,7 @@ class BehaviorTester {
     val b: BehaviorSink[Int] = new BehaviorSink(0)
     val trigger = new StreamSink[Long]()
     val out = new ListBuffer[String]()
-    val l = trigger.snapshot[Int, String](b, (x: Long, y: Int) => x + " " + y).listen(out.+=)
+    val l = trigger.snapshot[Int, String](b, (n, l) => s"$n $l").listen(out.+=)
     trigger.send(100L)
     b.send(2)
     trigger.send(200L)
@@ -185,7 +185,7 @@ class BehaviorTester {
     val a = new BehaviorSink(1)
     val b = new BehaviorSink(5L)
     val out = new ListBuffer[String]()
-    val l = a.lift[Long, String](b, (x, y) => x + " " + y).listen(out.+=)
+    val l = a.lift[Long, String](b, (x, y) => s"$x $y").listen(out.+=)
     a.send(12)
     b.send(6L)
     l.unlisten()
@@ -198,7 +198,7 @@ class BehaviorTester {
     val a3 = a.map(x => x * 3)
     val a5 = a.map(x => x * 5)
     val out = new ListBuffer[String]()
-    val l = a3.lift[Int, String](a5, (x, y) => x + " " + y).listen(out.+=)
+    val l = a3.lift[Int, String](a5, (x, y) => s"$x $y").listen(out.+=)
     a.send(2)
     l.unlisten()
     assertEquals(List("3 5", "6 10"), out)
@@ -227,7 +227,7 @@ class BehaviorTester {
     val e = new StreamSink[Int]()
     val h = e.hold(0)
     val out = new ListBuffer[String]()
-    val l = e.snapshot[Int, String](h, (a: Int, b: Int) => a + " " + b).listen(out.+=)
+    val l = e.snapshot[Int, String](h, (a, b) => s"$a $b").listen(out.+=)
     List(2, 3).foreach(e.send)
     l.unlisten()
     assertEquals(List("2 0", "3 2"), out)
@@ -407,9 +407,9 @@ class BehaviorTester {
 
 object BehaviorTester {
 
-  case class SB(a: Option[Character], b: Option[Character], sw: Option[Cell[Character]])
+  case class SB(a: Option[Char], b: Option[Char], sw: Option[Cell[Char]])
 
-  case class SE(a: Character, b: Character, sw: Option[Stream[Character]])
+  case class SE(a: Char, b: Char, sw: Option[Stream[Char]])
 
   case class SS2(s: StreamSink[Int] = new StreamSink[Int]())
 
