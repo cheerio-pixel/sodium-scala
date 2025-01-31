@@ -11,13 +11,13 @@ class Cell[A](val behavior: Behavior[A]) {
   /**
     * A cell with a constant value.
     */
-  def this(initValue: A) {
+  def this(initValue: A) =
     this(new Behavior[A](new Stream[A](), Some(initValue)))
-  }
 
-  def this(event: Stream[A], initValue: A) {
+
+  def this(event: Stream[A], initValue: A) =
     this(new Behavior[A](event, Some(initValue)))
-  }
+
 
   /**
     * Sample the cell's current value.

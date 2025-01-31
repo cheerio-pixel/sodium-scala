@@ -33,13 +33,13 @@ class Behavior[A](val str: Stream[A], protected var currentValue: Option[A]) {
   /**
     * A behavior with a constant value.
     */
-  def this(initValue: A) {
+  def this(initValue: A) =
     this(new Stream[A](), Some(initValue))
-  }
 
-  def this(event: Stream[A], initValue: A) {
+
+  def this(event: Stream[A], initValue: A) =
     this(event, Some(initValue))
-  }
+
 
   /**
     * @return The value including any updates that have happened in this transaction.

@@ -50,7 +50,7 @@ final class Transaction {
   def post_(childIx: Int, action: Transaction => Unit): Unit = {
     val neu: Transaction => Unit = postQ
       .get(childIx)
-      .map { existing => trans: Transaction =>
+      .map { existing => (trans: Transaction) =>
         {
           existing(trans)
           action(trans)
