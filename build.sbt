@@ -12,6 +12,7 @@
 
 lazy val root = (project in file(".")).settings(
   name := "sodium",
+  // This is not mine so this is left as is, unless I have another reason to change this
   organization := "nz.sodium",
   version := "2.0.0",
   scalaVersion := "3.3.5",
