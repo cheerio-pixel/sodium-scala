@@ -27,3 +27,6 @@ project/plugins/project/
 
 # Jupyter
 .ipynb_checkpoints
+/.bloop/
+/.bsp/
+/.metals/
