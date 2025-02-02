@@ -1,4 +1,4 @@
-package sodium
+package scala.sodium
 
 /**
   * A forward reference for a [[Cell]] equivalent to the Cell that is referenced.

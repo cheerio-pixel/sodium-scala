@@ -1,4 +1,4 @@
-package sodium
+package scala.sodium
 
 import java.util.concurrent.atomic.AtomicLong
 

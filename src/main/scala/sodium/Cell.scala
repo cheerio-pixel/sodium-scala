@@ -1,4 +1,4 @@
-package sodium
+package scala.sodium
 
 /**
   * Represents a value of type A that discretely changes over time.

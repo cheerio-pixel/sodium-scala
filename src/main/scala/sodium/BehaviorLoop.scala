@@ -1,4 +1,4 @@
-package sodium
+package scala.sodium
 
 /**
   * A forward reference for a [[Behavior]] equivalent to the Behavior that is referenced.

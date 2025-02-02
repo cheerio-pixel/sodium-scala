@@ -1,4 +1,4 @@
-package sodium
+package scala.sodium
 
 import scala.collection.mutable.ListBuffer
 import scala.ref.WeakReference

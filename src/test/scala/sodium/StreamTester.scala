@@ -1,4 +1,4 @@
-package sodium
+package scala.sodium
 
 import org.junit.After
 import org.junit.Assert.assertEquals

@@ -11,10 +11,11 @@
 // coverageExcludedPackages := "sodium.examples;sodium.swidgets"
 
 lazy val root = (project in file(".")).settings(
-  name := "sodium",
-  // This is not mine so this is left as is, unless I have another reason to change this
-  organization := "nz.sodium",
-  version := "2.0.0",
+  name := "core",
+  crossScalaVersions := Seq("2.13.16", "3.3.5"),
+  // To make the package for publishing
+  organization := "scala.sodium",
+  version := "1.0.0",
   scalaVersion := "3.3.5",
   scalacOptions ++= Seq(
     "-deprecation",

@@ -1,4 +1,4 @@
-package sodium
+package scala.sodium
 
 class LazyBehavior[A](event: Stream[A], _lazyInitValue: Option[Lazy[A]]) extends Behavior[A](event, None) {
 

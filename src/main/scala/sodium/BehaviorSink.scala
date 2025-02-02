@@ -1,4 +1,4 @@
-package sodium
+package scala.sodium
 
 /**
   * A cell that allows values to be pushed into it, acting as an interface between the

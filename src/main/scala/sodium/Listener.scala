@@ -1,4 +1,4 @@
-package sodium
+package scala.sodium
 
 /**
   * A handle for a listener that was registered with [[Behavior.listen Behavior.listen(A=>Unit)]] or

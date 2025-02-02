@@ -1,4 +1,4 @@
-package sodium
+package scala.sodium
 
 object MemoryTest5 {
   def main(args: Array[String]): Unit = {

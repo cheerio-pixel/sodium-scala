@@ -1,4 +1,4 @@
-package sodium
+package scala.sodium
 
 /**
   * A forward reference for a [[Stream]] equivalent to the Stream that is referenced.
