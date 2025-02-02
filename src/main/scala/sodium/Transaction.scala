@@ -89,7 +89,7 @@ final class Transaction {
     breakable {
       while (prioritizedQ.size > 0) {
         checkRegen()
-        if (prioritizedQ.isEmpty && sampleQ.isEmpty) break
+        if (prioritizedQ.isEmpty && sampleQ.isEmpty) break()
         val e = prioritizedQ.dequeue()
         entries.remove(e)
         e.action(this)

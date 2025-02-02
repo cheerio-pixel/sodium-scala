@@ -133,19 +133,21 @@ class Stream[A] private (val node: Node, val finalizers: ListBuffer[Listener], v
     *
     * @param str Stream to pass the value to
     */
-  final def bindTo(str: StreamWithSend[A]): Unit =
+  final def bindTo(str: StreamWithSend[A]): Unit = {
     val l = listen_(str.node, (trans: Transaction, a: A) => {
       str.send(trans, a)
     })
     str.unsafeAddCleanup(l)
+  }
 
   /**
     * Pass the values of this stream to another stream.
     *
     * @param str Stream to pass the value to
     */
-  inline final def --> (str: StreamWithSend[A]): Unit =
+  @inline final def --> (str: StreamWithSend[A]): Unit = {
     bindTo(str)
+  }
 
   /**
     * Transform the stream's event values into the specified constant value.

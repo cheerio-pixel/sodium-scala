@@ -19,7 +19,7 @@ class BehaviorTester {
     val s = new StreamSink[Int]()
     val c = s.hold(0)
     val out = new ListBuffer[Int]()
-    val l = c.listen(out.+=)
+    val l = c.listen(x => out += x)
     List(2, 9).foreach(s.send)
     l.unlisten()
     assertEquals(List(0, 2, 9), out)
@@ -30,7 +30,7 @@ class BehaviorTester {
   def testSendNull(): Unit = {
     val c = new CellSink[String]("")
     val out = new ListBuffer[String]()
-    val l = c.listen(out.+=)
+    val l = c.listen(x => out += x)
     c.send("0")
     c.send(null)
     c.send("1")
@@ -43,7 +43,7 @@ class BehaviorTester {
     val e = new StreamSink[Int]()
     val b = e.hold(0)
     val out = new ListBuffer[Int]()
-    val l = b.updates().listen(out.+=)
+    val l = b.updates().listen(x => out += x)
     List(2, 9).foreach(e.send)
     l.unlisten()
     assertEquals(List(2, 9), out)
@@ -54,7 +54,7 @@ class BehaviorTester {
     val b: BehaviorSink[Int] = new BehaviorSink(0)
     val trigger = new StreamSink[Long]()
     val out = new ListBuffer[String]()
-    val l = trigger.snapshot[Int, String](b, (n, l) => s"$n $l").listen(out.+=)
+    val l = trigger.snapshot[Int, String](b, (n, l) => s"$n $l").listen(x => out += x)
     trigger.send(100L)
     b.send(2)
     trigger.send(200L)
@@ -70,7 +70,7 @@ class BehaviorTester {
   def testListen(): Unit = {
     val c = new CellSink(9)
     val out = new ListBuffer[Int]()
-    val l = c.listen(out.+=)
+    val l = c.listen(x => out += x)
     List(2, 7).foreach(c.send)
     l.unlisten()
     assertEquals(List(9, 2, 7), out)
@@ -82,7 +82,7 @@ class BehaviorTester {
     val b = new BehaviorSink(9)
     val out = new ListBuffer[Int]()
     val l = Transaction { _ =>
-      Operational.value(b).listenOnce(out.+=)
+      Operational.value(b).listenOnce(x => out += x)
     }
     List(2, 7).foreach(b.send)
     l.unlisten()
@@ -94,7 +94,7 @@ class BehaviorTester {
   def testUpdates(): Unit = {
     val b = new BehaviorSink(9)
     val out = new ListBuffer[Int]()
-    val l = Operational.updates(b).listen(out.+=)
+    val l = Operational.updates(b).listen(x => out += x)
     List(2, 7).foreach(b.send)
     l.unlisten()
     assertEquals(List(2, 7), out)
@@ -105,7 +105,7 @@ class BehaviorTester {
   def testCellUpdates(): Unit = {
     val c = new CellSink(9)
     val out = new ListBuffer[Int]()
-    val l = c.updates().listen(out.+=)
+    val l = c.updates().listen(x => out += x)
     List(2, 7).foreach(c.send)
     l.unlisten()
     assertEquals(List(2, 7), out)
@@ -115,7 +115,7 @@ class BehaviorTester {
   def testValues(): Unit = {
     val b = new BehaviorSink(9)
     val out = new ListBuffer[Int]()
-    val l = b.listen(out.+=)
+    val l = b.listen(x => out += x)
     List(2, 7).foreach(b.send)
     l.unlisten()
     assertEquals(List(9, 2, 7), out)
@@ -132,7 +132,7 @@ class BehaviorTester {
       cellLocal
     })
     val out = new ListBuffer[Int]()
-    val l = cell.listen(out.+=)
+    val l = cell.listen(x => out += x)
     List(3, 4, 7, 8).foreach(s.send)
     l.unlisten()
     assertEquals(List(1, 4, 8, 15, 23), out)
@@ -142,7 +142,7 @@ class BehaviorTester {
   def testConstantBehavior(): Unit = {
     val b = new Behavior(12)
     val out = new ListBuffer[Int]()
-    val l = b.listen(out.+=)
+    val l = b.listen(x => out += x)
     l.unlisten()
     assertEquals(List(12), out)
   }
@@ -151,7 +151,7 @@ class BehaviorTester {
   def testMap(): Unit = {
     val b = new BehaviorSink(6)
     val out = new ListBuffer[String]()
-    val l = b.map(_.toString()).listen(out.+=)
+    val l = b.map(_.toString()).listen(x => out += x)
     b.send(8)
     l.unlisten()
     assertEquals(List("6", "8"), out)
@@ -162,7 +162,7 @@ class BehaviorTester {
     val out = new ListBuffer[String]()
     val bm = b.map(_.toString())
     b.send(2)
-    val l = bm.listen(out.+=)
+    val l = bm.listen(x => out += x)
     b.send(8)
     l.unlisten()
     assertEquals(List("2", "8"), out)
@@ -173,7 +173,7 @@ class BehaviorTester {
     val bf = new BehaviorSink[Long => String](b => "1 " + b)
     val ba = new BehaviorSink(5L)
     val out = new ListBuffer[String]()
-    val l = Behavior(bf, ba).listen(out.+=)
+    val l = Behavior(bf, ba).listen(x => out += x)
     bf.send(b => "12 " + b)
     ba.send(6L)
     l.unlisten()
@@ -185,7 +185,7 @@ class BehaviorTester {
     val a = new BehaviorSink(1)
     val b = new BehaviorSink(5L)
     val out = new ListBuffer[String]()
-    val l = a.lift[Long, String](b, (x, y) => s"$x $y").listen(out.+=)
+    val l = a.lift[Long, String](b, (x, y) => s"$x $y").listen(x => out += x)
     a.send(12)
     b.send(6L)
     l.unlisten()
@@ -198,7 +198,7 @@ class BehaviorTester {
     val a3 = a.map(x => x * 3)
     val a5 = a.map(x => x * 5)
     val out = new ListBuffer[String]()
-    val l = a3.lift[Int, String](a5, (x, y) => s"$x $y").listen(out.+=)
+    val l = a3.lift[Int, String](a5, (x, y) => s"$x $y").listen(x => out += x)
     a.send(2)
     l.unlisten()
     assertEquals(List("3 5", "6 10"), out)
@@ -217,7 +217,7 @@ class BehaviorTester {
     val out = new ListBuffer[Int]()
     val l = b1
       .lift(b2, (x: Int, y: Int) => x + y)
-      .listen((x: Int) => out.+=(x))
+      .listen((x: Int) => out += x)
     l.unlisten()
     assertEquals(List(10), out)
   }
@@ -227,7 +227,7 @@ class BehaviorTester {
     val e = new StreamSink[Int]()
     val h = e.hold(0)
     val out = new ListBuffer[String]()
-    val l = e.snapshot[Int, String](h, (a, b) => s"$a $b").listen(out.+=)
+    val l = e.snapshot[Int, String](h, (a, b) => s"$a $b").listen(x => out += x)
     List(2, 3).foreach(e.send)
     l.unlisten()
     assertEquals(List("2 0", "3 2"), out)
@@ -243,7 +243,7 @@ class BehaviorTester {
     val bsw = Stream.filterOptional(esb.map(s => s.sw)).hold(ba)
     val bo = Cell.switchC(bsw)
     val out = new ListBuffer[Character]()
-    val l = bo.listen(out.+=)
+    val l = bo.listen(x => out += x)
     List(
       SB(Some('B'), Some('b'), None),
       SB(Some('C'), Some('c'), Some(bb)),
@@ -268,7 +268,7 @@ class BehaviorTester {
     val bsw = Stream.filterOptional(ese.map(s => s.sw)).hold(ea)
     val out = new ListBuffer[Char]()
     val eo = Cell.switchS(bsw)
-    val l = eo.listen(out.+=(_)) //IntelliJ highlight error
+    val l = eo.listen(x => out += x) //IntelliJ highlight error
     List(
       SE('A', 'a', None),
       SE('B', 'b', None),
@@ -290,7 +290,7 @@ class BehaviorTester {
     val css = new BehaviorSink[SS2](ss1)
     val so = Behavior.switchS(css.map[Stream[Int]](_.s))
     val out = new ListBuffer[Int]()
-    val l = so.listen(out.+=)
+    val l = so.listen(x => out += x)
     val ss3 = SS2()
     val ss4 = SS2()
     val ss2 = SS2()
@@ -321,7 +321,7 @@ class BehaviorTester {
       sum_out_
     })
     val out = new ListBuffer[Int]()
-    val l = sum_out.listen(out.+=)
+    val l = sum_out.listen(x => out += x)
     List(2, 3, 1).foreach(sa.send)
     l.unlisten()
     assertEquals(List(0, 2, 5, 6), out)
@@ -333,7 +333,7 @@ class BehaviorTester {
     val sa = new StreamSink[Int]()
     val out = new ListBuffer[Int]()
     val sum = sa.accum[Int](100, (a, s) => a + s)
-    val l = sum.listen(out.+=)
+    val l = sum.listen(x => out += x)
     List(5, 7, 1, 2, 3).foreach(sa.send)
     l.unlisten()
     assertEquals(List(100, 105, 112, 113, 115, 118), out)
@@ -347,7 +347,7 @@ class BehaviorTester {
       val b = new BehaviorLoop[String]()
       val eSnap = Operational.value(a).snapshot[String, String](b, (aa: String, bb: String) => aa + " " + bb)
       b.loop(new Behavior[String]("cheese"))
-      eSnap.listen(out.+=)
+      eSnap.listen(x => out += x)
     })
 
     l.unlisten()
@@ -364,7 +364,7 @@ class BehaviorTester {
       value_
     })
     val eTick = new StreamSink[Int]()
-    val l = eTick.snapshot(value).listen(out.+=)
+    val l = eTick.snapshot(value).listen(x => out += x)
     eTick.send(0)
     l.unlisten()
     assertEquals(List("cheese"), out)
@@ -380,7 +380,7 @@ class BehaviorTester {
       a.loop(new Behavior[String]("tea"))
       c_
     })
-    val l = c.listen(out.+=)
+    val l = c.listen(x => out += x)
     b.send("caddy")
     l.unlisten()
     assertEquals(List("tea kettle", "tea caddy"), out)
@@ -397,7 +397,7 @@ class BehaviorTester {
             Operational.defer(Operational.value(c))
           })
           .hold(new Stream[String]()))
-      .listen(out.+=)
+      .listen(x => out += x)
     List(2, 4).foreach(si.send)
     l.unlisten()
     assertEquals(List("A2", "A4"), out)
