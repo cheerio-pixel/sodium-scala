@@ -210,14 +210,23 @@ object Behavior {
       val out = new StreamWithSend[B]()
 
       final class ApplyHandler(val trans0: Transaction) {
-        var a: A = _
-        var f_present = false
-        var f: A => B = _
-        var a_present = false
+        var a: Option[A] = None
+        var f: Option[A => B] = None
         def run(trans1: Transaction): Unit = {
-          trans1.prioritized(out.node, { trans2 =>
-            out.send(trans2, f(a))
-          })
+          f match {
+            case None => ()
+            case Some(fn) =>
+              a match {
+                case None => ()
+                case Some(v) =>
+                  trans1.prioritized(
+                    out.node,
+                    { trans2 =>
+                      out.send(trans2, fn(v))
+                    }
+                  )
+              }
+          }
         }
       }
 
@@ -229,23 +238,23 @@ object Behavior {
       val h: ApplyHandler = new ApplyHandler(trans0)
       val l1 = bf
         .value(trans0)
-        .listen_(in_target, (trans1: Transaction, f: A => B) => {
-          h.f = f
-          h.f_present = true
-          if (h.a_present) {
+        .listen_(
+          in_target,
+          (trans1: Transaction, f: A => B) => {
+            h.f = Some(f)
             h.run(trans1)
           }
-        })
+        )
 
       val l2 = ba
         .value(trans0)
-        .listen_(in_target, (trans1: Transaction, a: A) => {
-          h.a = a
-          h.a_present = true
-          if (h.f_present) {
+        .listen_(
+          in_target,
+          (trans1: Transaction, a: A) => {
+            h.a = Some(a)
             h.run(trans1)
           }
-        })
+        )
       out
         .lastFiringOnly(trans0)
         .unsafeAddCleanup(l1)
