@@ -69,16 +69,11 @@ class Behavior[A](val str: Stream[A], protected var currentValue: Option[A]) {
     val me = this
     val s = new Behavior.LazySample[A](me)
     trans.sample(() => {
-      s.value = me.valueUpdate.getOrElse(me.sampleNoTrans())
-      s.hasValue = true
+      s.value = Some(me.valueUpdate.getOrElse(me.sampleNoTrans()))
       s.cell = null
     })
     new Lazy[A](() =>
-      if (s.hasValue) {
-        s.value
-      } else {
-        s.cell.sample()
-      }
+      s.value.getOrElse(s.cell.sample())
     )
   }
 
@@ -199,8 +194,7 @@ class Behavior[A](val str: Stream[A], protected var currentValue: Option[A]) {
 object Behavior {
 
   private[sodium] class LazySample[A](var cell: Behavior[A]) {
-    private[sodium] var hasValue = false
-    private[sodium] var value: A = _
+    private[sodium] var value: Option[A] = None
   }
 
   /** Apply a value inside a cell to a function inside a cell. This is the primitive for all function lifting.
