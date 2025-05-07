@@ -6,5 +6,15 @@
 
 Port of [Sodium FRP](https://github.com/SodiumFRP/sodium) (Functional Reactive Programming) library to Scala originally started by newca12.
 
-Now I have update it to a more modern version of scala.
+Now I have updated it to a more modern version of scala.
+
+### Install ###
+
+Add the resolver
+`resolvers += "jitpack" at "https://jitpack.io"`
+
+And then add the dependency
+
+`libraryDependencies += "com.github.cheerio-pixel" %% "sodium-scala" % "v1.0"`
+
 
