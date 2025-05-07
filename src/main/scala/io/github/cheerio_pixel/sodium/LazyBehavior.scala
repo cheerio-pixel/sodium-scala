@@ -1,4 +1,4 @@
-package scala.sodium
+package io.github.cheerio_pixel.sodium
 
 class LazyBehavior[A](event: Stream[A], _lazyInitValue: Option[Lazy[A]]) extends Behavior[A](event, None) {
 

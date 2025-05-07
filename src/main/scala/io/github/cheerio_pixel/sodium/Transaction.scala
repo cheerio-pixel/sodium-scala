@@ -1,4 +1,4 @@
-package scala.sodium
+package io.github.cheerio_pixel.sodium
 
 import java.util.concurrent.atomic.AtomicLong
 

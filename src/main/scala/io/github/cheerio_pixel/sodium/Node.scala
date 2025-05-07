@@ -1,4 +1,4 @@
-package scala.sodium
+package io.github.cheerio_pixel.sodium
 
 import scala.collection.mutable.ListBuffer
 import scala.ref.WeakReference

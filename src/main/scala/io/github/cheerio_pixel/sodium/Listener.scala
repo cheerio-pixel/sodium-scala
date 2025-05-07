@@ -1,4 +1,4 @@
-package scala.sodium
+package io.github.cheerio_pixel.sodium
 
 /**
   * A handle for a listener that was registered with [[Behavior.listen Behavior.listen(A=>Unit)]] or

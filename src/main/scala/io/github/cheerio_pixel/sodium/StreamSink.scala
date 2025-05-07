@@ -1,4 +1,4 @@
-package scala.sodium
+package io.github.cheerio_pixel.sodium
 
 /**
   * A stream that allows values to be pushed into it, acting as an interface between the

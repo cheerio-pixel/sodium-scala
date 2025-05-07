@@ -1,4 +1,4 @@
-package scala.sodium
+package io.github.cheerio_pixel.sodium
 
 /**
   * A forward reference for a [[Behavior]] equivalent to the Behavior that is referenced.

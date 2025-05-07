@@ -1,4 +1,4 @@
-package scala.sodium
+package io.github.cheerio_pixel.sodium
 
 class CoalesceHandler[A](private val f: (A, A) => A, private val out: StreamWithSend[A]) extends TransactionHandler[A] {
   private var acc: Option[A] = None
