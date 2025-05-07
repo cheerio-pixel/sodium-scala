@@ -1,6 +1,6 @@
 package io.github.cheerio_pixel.sodium
 
-import sodium.Node.Target
+import io.github.cheerio_pixel.sodium.Node.Target
 
 /**
   * Represents a value of type A that changes over time.

@@ -1,8 +1,8 @@
-package scala.sodium
+package io.github.cheerio_pixel.sodium
 
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import sodium.Node.Target
+import io.github.cheerio_pixel.sodium.Node.Target
 
 class NodeTester {
   @Test

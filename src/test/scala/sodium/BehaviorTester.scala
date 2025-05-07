@@ -1,4 +1,4 @@
-package scala.sodium
+package io.github.cheerio_pixel.sodium
 
 import org.junit.Assert.assertEquals
 import org.junit.{After, Test}

@@ -81,7 +81,7 @@ final class Transaction {
       if (toRegen) {
         toRegen = false
         prioritizedQ.clear()
-        prioritizedQ.enqueue(entries.toSeq: _*)
+        prioritizedQ.enqueue(entries.toSeq*)
       }
     }
 

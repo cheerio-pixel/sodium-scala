@@ -1,6 +1,6 @@
 package io.github.cheerio_pixel.sodium
 
-import sodium.Node.Target
+import io.github.cheerio_pixel.sodium.Node.Target
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer

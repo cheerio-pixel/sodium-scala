@@ -1,4 +1,4 @@
-package scala.sodium
+package io.github.cheerio_pixel.sodium
 
 object MemoryTest3 {
   def main(args: Array[String]): Unit = {
