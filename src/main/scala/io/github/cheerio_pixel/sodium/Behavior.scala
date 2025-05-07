@@ -2,8 +2,7 @@ package io.github.cheerio_pixel.sodium
 
 import io.github.cheerio_pixel.sodium.Node.Target
 
-/**
-  * Represents a value of type A that changes over time.
+/** Represents a value of type A that changes over time.
   */
 class Behavior[A](val str: Stream[A], protected var currentValue: Option[A]) {
 
@@ -27,42 +26,39 @@ class Behavior[A](val str: Stream[A], protected var currentValue: Option[A]) {
           valueUpdate = Some(a)
         },
         false
-      ))
+      )
+    )
   })
 
-  /**
-    * A behavior with a constant value.
+  /** A behavior with a constant value.
     */
   def this(initValue: A) =
     this(new Stream[A](), Some(initValue))
 
-
   def this(event: Stream[A], initValue: A) =
     this(event, Some(initValue))
 
-
-  /**
-    * @return The value including any updates that have happened in this transaction.
+  /** @return
+    *   The value including any updates that have happened in this transaction.
     */
   final def newValue(): A = valueUpdate.getOrElse(sampleNoTrans())
 
-  /**
-    * Sample the cell's current value.
+  /** Sample the cell's current value.
     *
-    * It may be used inside the functions passed to primitives that apply them to [[Stream]]s,
-    * including [[Stream.map Stream.map(A=>B)]]] in which case it is equivalent to snapshotting the cell,
-    * [[sodium.Stream.snapshot[B,C]* Stream.snapshot(Behavior,(A,B)=>C)]], [[Stream.filter Stream.filter(A=>Boolean)]] and
-    * [[Stream!.merge(s:sodium\.Stream[A],f:(A,A)=>A):sodium\.Stream[A]* Stream.merge(Stream,(A,A)=>A)]]
-    * It should generally be avoided in favour of [[listen listen(A=>Unit)]] so you don't
-    * miss any updates, but in many circumstances it makes sense.
+    * It may be used inside the functions passed to primitives that apply them to [[Stream]]s, including
+    * [[Stream.map Stream.map(A=>B)]]] in which case it is equivalent to snapshotting the cell,
+    * [[sodium.Stream.snapshot[B,C]* Stream.snapshot(Behavior,(A,B)=>C)]], [[Stream.filter Stream.filter(A=>Boolean)]]
+    * and [[Stream!.merge(s:sodium\.Stream[A],f:(A,A)=>A):sodium\.Stream[A]* Stream.merge(Stream,(A,A)=>A)]] It should
+    * generally be avoided in favour of [[listen listen(A=>Unit)]] so you don't miss any updates, but in many
+    * circumstances it makes sense.
     */
   final def sample(): A = Transaction(_ => sampleNoTrans())
 
-  /**
-    * A variant of [[sample():A* sample()]] that works with [[BehaviorLoop]]s when they haven't been looped yet.
-    * It should be used in any code that's general enough that it could be passed a [[BehaviorLoop]].
+  /** A variant of [[sample():A* sample()]] that works with [[BehaviorLoop]]s when they haven't been looped yet. It
+    * should be used in any code that's general enough that it could be passed a [[BehaviorLoop]].
     *
-    * @see [[sodium.Stream!.holdLazy(initValue:sodium\.Lazy[A]):sodium\.Behavior[A]* Stream!.holdLazy()]]
+    * @see
+    *   [[sodium.Stream!.holdLazy(initValue:sodium\.Lazy[A]):sodium\.Behavior[A]* Stream!.holdLazy()]]
     */
   final def sampleLazy(): Lazy[A] = {
     val me = this
@@ -82,7 +78,8 @@ class Behavior[A](val str: Stream[A], protected var currentValue: Option[A]) {
         s.value
       } else {
         s.cell.sample()
-    })
+      }
+    )
   }
 
   def sampleNoTrans(): A = currentValue.get
@@ -96,20 +93,20 @@ class Behavior[A](val str: Stream[A], protected var currentValue: Option[A]) {
     sInitial.merge(updates(), (left, right) => right)
   }
 
-  /**
-    * Transform the cell's value according to the supplied function, so the returned Behavior
-    * always reflects the value of the function applied to the input Behavior's value.
+  /** Transform the cell's value according to the supplied function, so the returned Behavior always reflects the value
+    * of the function applied to the input Behavior's value.
     *
-    * @param f Function to apply to convert the values. It must be <em>referentially transparent</em>.
+    * @param f
+    *   Function to apply to convert the values. It must be <em>referentially transparent</em>.
     */
   final def map[B](f: A => B): Behavior[B] =
     Transaction(trans => updates().map(f).holdLazy_(trans, sampleLazy(trans).map(f)))
 
-  /**
-    * Lift a binary function into cells, so the returned Behavior always reflects the specified
-    * function applied to the input cells' values.
+  /** Lift a binary function into cells, so the returned Behavior always reflects the specified function applied to the
+    * input cells' values.
     *
-    * @param fn Function to apply. It must be <em>referentially transparent</em>.
+    * @param fn
+    *   Function to apply. It must be <em>referentially transparent</em>.
     */
   final def lift[B, C](b: Behavior[B], fn: (A, B) => C): Behavior[C] = {
     def ffa(aa: A)(bb: B) = fn(aa, bb)
@@ -117,55 +114,59 @@ class Behavior[A](val str: Stream[A], protected var currentValue: Option[A]) {
     Behavior(bf, b)
   }
 
-  /**
-    * Lift a ternary function into cells, so the returned Behavior always reflects the specified
-    * function applied to the input cells' values.
+  /** Lift a ternary function into cells, so the returned Behavior always reflects the specified function applied to the
+    * input cells' values.
     *
-    * @param fn Function to apply. It must be <em>referentially transparent</em>.
+    * @param fn
+    *   Function to apply. It must be <em>referentially transparent</em>.
     */
   final def lift[B, C, D](b: Behavior[B], c: Behavior[C], fn: (A, B, C) => D): Behavior[D] = {
     def ffa(aa: A)(bb: B)(cc: C) = fn(aa, bb, cc)
     Behavior(Behavior(this.map(ffa), b), c)
   }
 
-  /**
-    * Lift a quaternary function into cells, so the returned Behavior always reflects the specified
-    * function applied to the input cells' values.
+  /** Lift a quaternary function into cells, so the returned Behavior always reflects the specified function applied to
+    * the input cells' values.
     *
-    * @param fn Function to apply. It must be <em>referentially transparent</em>.
+    * @param fn
+    *   Function to apply. It must be <em>referentially transparent</em>.
     */
   final def lift[B, C, D, E](b: Behavior[B], c: Behavior[C], d: Behavior[D], fn: (A, B, C, D) => E): Behavior[E] = {
     def ffa(aa: A)(bb: B)(cc: C)(dd: D) = fn(aa, bb, cc, dd)
     Behavior(Behavior(Behavior(this.map(ffa), b), c), d)
   }
 
-  /**
-    * Lift a 5-argument function into cells, so the returned Behavior always reflects the specified
-    * function applied to the input cells' values.
+  /** Lift a 5-argument function into cells, so the returned Behavior always reflects the specified function applied to
+    * the input cells' values.
     *
-    * @param fn Function to apply. It must be <em>referentially transparent</em>.
+    * @param fn
+    *   Function to apply. It must be <em>referentially transparent</em>.
     */
-  final def lift[B, C, D, E, F](b: Behavior[B],
-                                c: Behavior[C],
-                                d: Behavior[D],
-                                e: Behavior[E],
-                                fn: (A, B, C, D, E) => F): Behavior[F] = {
+  final def lift[B, C, D, E, F](
+      b: Behavior[B],
+      c: Behavior[C],
+      d: Behavior[D],
+      e: Behavior[E],
+      fn: (A, B, C, D, E) => F
+  ): Behavior[F] = {
     def ffa(aa: A)(bb: B)(cc: C)(dd: D)(ee: E) = fn(aa, bb, cc, dd, ee)
     Behavior(Behavior(Behavior(Behavior(this.map(ffa), b), c), d), e)
   }
 
-  /**
-    * Lift a 6-argument function into cells, so the returned Behavior always reflects the specified
-    * function applied to the input cells' values.
+  /** Lift a 6-argument function into cells, so the returned Behavior always reflects the specified function applied to
+    * the input cells' values.
     *
-    * @param fn Function to apply. It must be <em>referentially transparent</em>.
+    * @param fn
+    *   Function to apply. It must be <em>referentially transparent</em>.
     */
-  final def lift[B, C, D, E, F, G](b: Behavior[B],
-                                   c: Behavior[C],
-                                   d: Behavior[D],
-                                   e: Behavior[E],
-                                   f: Behavior[F],
-                                   fn: (A, B, C, D, E, F) => G): Behavior[G] = {
+  final def lift[B, C, D, E, F, G](
+      b: Behavior[B],
+      c: Behavior[C],
+      d: Behavior[D],
+      e: Behavior[E],
+      f: Behavior[F],
+      fn: (A, B, C, D, E, F) => G
+  ): Behavior[G] = {
     def ffa(aa: A)(bb: B)(cc: C)(dd: D)(ee: E)(ff: F) = fn(aa, bb, cc, dd, ee, ff)
     Behavior(Behavior(Behavior(Behavior(Behavior(this.map(ffa), b), c), d), e), f)
   }
@@ -174,26 +175,22 @@ class Behavior[A](val str: Stream[A], protected var currentValue: Option[A]) {
     cleanup.foreach(_.unlisten())
   }
 
-  /**
-    * Listen for updates to the value of this cell. This is the observer pattern. The
-    * returned [[Listener]] has a [[sodium.Listener.unlisten()* Listener.unlisten()]] method to cause the
-    * listener to be removed. This is an OPERATIONAL mechanism is for interfacing between
-    * the world of I/O and for FRP.
+  /** Listen for updates to the value of this cell. This is the observer pattern. The returned [[Listener]] has a
+    * [[sodium.Listener.unlisten()* Listener.unlisten()]] method to cause the listener to be removed. This is an
+    * OPERATIONAL mechanism is for interfacing between the world of I/O and for FRP.
     *
-    * @param action The handler to execute when there's a new value.
-    *               You should make no assumptions about what thread you are called on, and the
-    *               handler should not block. You are not allowed to use [[sodium.BehaviorSink.send BehaviorSink.send(A)]]
-    *               or [[sodium.StreamSink.send(a:A):Unit* StreamSink.send(A)]] in the handler.
-    *               An exception will be thrown, because you are not meant to use this to create
-    *               your own primitives.
+    * @param action
+    *   The handler to execute when there's a new value. You should make no assumptions about what thread you are called
+    *   on, and the handler should not block. You are not allowed to use
+    *   [[sodium.BehaviorSink.send BehaviorSink.send(A)]] or [[sodium.StreamSink.send(a:A):Unit* StreamSink.send(A)]] in
+    *   the handler. An exception will be thrown, because you are not meant to use this to create your own primitives.
     */
   final def listen(action: A => Unit): Listener = Transaction(trans => value(trans).listen(action))
 
-  /**
-    * A variant of [[sodium.Behavior.listen(action:A=>Unit):sodium\.Listener* listen(A=>Unit)]] that will deregister
-    * the listener automatically if the listener is garbage collected. With
-    * [[sodium.Behavior.listen(action:A=>Unit):sodium\.Listener* listen(A=>Unit)]], the listener is
-    * only deregistered if [[sodium.Listener.unlisten()* Listener.unlisten()]] is called explicitly.
+  /** A variant of [[sodium.Behavior.listen(action:A=>Unit):sodium\.Listener* listen(A=>Unit)]] that will deregister the
+    * listener automatically if the listener is garbage collected. With
+    * [[sodium.Behavior.listen(action:A=>Unit):sodium\.Listener* listen(A=>Unit)]], the listener is only deregistered if
+    * [[sodium.Listener.unlisten()* Listener.unlisten()]] is called explicitly.
     */
   final def listenWeak(action: A => Unit): Listener = Transaction(trans => value(trans).listenWeak(action))
 
@@ -201,14 +198,12 @@ class Behavior[A](val str: Stream[A], protected var currentValue: Option[A]) {
 
 object Behavior {
 
-  private[sodium] class LazySample[A] (var cell: Behavior[A]) {
+  private[sodium] class LazySample[A](var cell: Behavior[A]) {
     private[sodium] var hasValue = false
     private[sodium] var value: A = _
   }
 
-  /**
-    * Apply a value inside a cell to a function inside a cell. This is the
-    * primitive for all function lifting.
+  /** Apply a value inside a cell to a function inside a cell. This is the primitive for all function lifting.
     */
   def apply[A, B](bf: Behavior[A => B], ba: Behavior[A]): Behavior[B] =
     Transaction(trans0 => {
@@ -262,8 +257,7 @@ object Behavior {
 
     })
 
-  /**
-    * Unwrap a stream inside another behavior to give a time-varying stream implementation.
+  /** Unwrap a stream inside another behavior to give a time-varying stream implementation.
     */
   def switchC[A](bba: Behavior[Behavior[A]]): Behavior[A] =
     Transaction(trans0 => {
@@ -281,9 +275,15 @@ object Behavior {
           currentListener.foreach(_.unlisten())
           currentListener = Some(
             ba.value(trans)
-              .listen(out.node, trans, (trans3: Transaction, a: A) => {
-                out.send(trans3, a)
-              }, false))
+              .listen(
+                out.node,
+                trans,
+                (trans3: Transaction, a: A) => {
+                  out.send(trans3, a)
+                },
+                false
+              )
+          )
         }
 
         override def finalize(): Unit = {
@@ -296,8 +296,7 @@ object Behavior {
 
   def switchC[A](bca: Behavior[Cell[A]]): Cell[A] = new Cell[A](Behavior.switchC[A](bca.map(_.behavior)))
 
-  /**
-    * Unwrap an event inside a cell to give a time-varying event implementation.
+  /** Unwrap an event inside a cell to give a time-varying event implementation.
     */
   def switchS[A](bea: Behavior[Stream[A]]): Stream[A] = {
     def switchS(trans1: Transaction, bea: Behavior[Stream[A]]): Stream[A] = {
